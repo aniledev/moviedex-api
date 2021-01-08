@@ -38,7 +38,7 @@ const handleGetMovies = (req, res, next) => {
   let response = MOVIEDEX;
 
   // read the req.query object; provide default values for the ones that are required
-  const { genre = "", country = "", avg_vote } = req.query;
+  const { genre = "", country = "", avg_vote = "0" } = req.query;
 
   //validate genre if there is one; genre must be one of the valid types
   const validGenres = [
@@ -110,6 +110,18 @@ const handleGetMovies = (req, res, next) => {
         movie["country"].toLowerCase().includes(country.toLowerCase())
       );
     }
+  }
+
+  if (avg_vote) {
+    // if avg_vote is not a number return a statement
+    if (typeof Number(avg_vote) === "number") {
+      response = MOVIEDEX.filter((movie) => movie["avg_vote"] >= avg_vote);
+    }
+    if (typeof avg_vote === "string") {
+      logger.error(`Invalid query input for avg_vote: ${avg_vote}.`);
+      return res.status(400).send("Avg vote must be a number.");
+    }
+    // else make sure that the results are greater than or equal to the average cote
   }
 
   res.json(response);

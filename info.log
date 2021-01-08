@@ -1,2 +1,7 @@
 
 {"message":"Invalid query input for genre: invalid.","level":"error"}
+{"message":"Invalid query input for avg_vote: 4.","level":"error"}
+{"message":"Invalid query input for avg_vote: 4.","level":"error"}
+{"message":"Invalid query input for avg_vote: 7.","level":"error"}
+{"message":"Invalid query input for avg_vote: seven.","level":"error"}
+{"message":"Invalid query input for avg_vote: false.","level":"error"}
