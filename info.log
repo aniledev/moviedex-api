@@ -5,3 +5,13 @@
 {"message":"Invalid query input for avg_vote: 7.","level":"error"}
 {"message":"Invalid query input for avg_vote: seven.","level":"error"}
 {"message":"Invalid query input for avg_vote: false.","level":"error"}
+{"message":"Invalid query input for avg_vote: false.","level":"error"}
+{"message":"Invalid query input for avg_vote: one.","level":"error"}
+{"message":"Invalid query input for avg_vote: [1,3,4,4,].","level":"error"}
+{"message":"invalid query input for avg_vote: 48.","level":"error"}
+{"message":"invalid query input for avg_vote: -4.","level":"error"}
+{"message":"Invalid query input for avg_vote: 3.","level":"error"}
+{"message":"invalid query input for avg_vote: 0.","level":"error"}
+{"message":"Invalid query input for genre: invalid.","level":"error"}
+{"message":"Invalid query input for country: invalid.","level":"error"}
+{"message":"invalid query input for avg_vote: 78.","level":"error"}

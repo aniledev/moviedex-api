@@ -38,7 +38,7 @@ const handleGetMovies = (req, res, next) => {
   let response = MOVIEDEX;
 
   // read the req.query object; provide default values for the ones that are required
-  const { genre = "", country = "", avg_vote = "0" } = req.query;
+  const { genre, country = "", avg_vote = "1" } = req.query;
 
   //validate genre if there is one; genre must be one of the valid types
   const validGenres = [
@@ -63,8 +63,10 @@ const handleGetMovies = (req, res, next) => {
     "Grotesque",
   ];
 
+  const validGenresString = validGenres.toString();
+
   if (genre) {
-    if (!validGenres.toString().toLowerCase().includes(genre.toLowerCase())) {
+    if (!validGenresString.toLowerCase().includes(genre.toLowerCase())) {
       // if genres is not one of the valid genres, then return a status of 400
       logger.error(`Invalid query input for genre: ${genre}.`);
       return res
@@ -73,7 +75,7 @@ const handleGetMovies = (req, res, next) => {
           "Genre must either be animation, drama, romantic, comedy, crime, thriller, adventure, documentary, horror, action, western, final embrace, spy, history, biography, musical, fantasy, war, or grotesque."
         );
     } else {
-      response = MOVIEDEX.filter((movie) =>
+      response = response.filter((movie) =>
         movie["genre"].toLowerCase().includes(genre.toLowerCase())
       );
     }
@@ -106,7 +108,7 @@ const handleGetMovies = (req, res, next) => {
           "Country must either be United States, Italy, Germany, Israel, Great Britain, France, Hungary, China, Canada, Spain, or Japan."
         );
     } else {
-      response = MOVIEDEX.filter((movie) =>
+      response = response.filter((movie) =>
         movie["country"].toLowerCase().includes(country.toLowerCase())
       );
     }
@@ -115,13 +117,18 @@ const handleGetMovies = (req, res, next) => {
   if (avg_vote) {
     // if avg_vote is not a number return a statement
     if (typeof Number(avg_vote) === "number") {
-      response = MOVIEDEX.filter((movie) => movie["avg_vote"] >= avg_vote);
+      response = response.filter((movie) => movie["avg_vote"] >= avg_vote);
     }
-    if (typeof avg_vote === "string") {
-      logger.error(`Invalid query input for avg_vote: ${avg_vote}.`);
-      return res.status(400).send("Avg vote must be a number.");
+    if (Number(avg_vote) < 1 || Number(avg_vote) > 10) {
+      logger.error(`invalid query input for avg_vote: ${avg_vote}.`);
+      return res.status(400).send("Avg vote must be a number 1 through 10.");
     }
+
     // else make sure that the results are greater than or equal to the average cote
+  }
+
+  if (response.length < 1 || response == undefined) {
+    return res.status(200).send("No matches found. Please try again.");
   }
 
   res.json(response);
