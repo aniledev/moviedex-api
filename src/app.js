@@ -66,6 +66,7 @@ const handleGetMovies = (req, res, next) => {
   if (genre) {
     if (!validGenres.toString().toLowerCase().includes(genre.toLowerCase())) {
       // if genres is not one of the valid genres, then return a status of 400
+      logger.error(`Invalid query input for genre: ${genre}.`);
       return res
         .status(400)
         .send(
@@ -98,6 +99,7 @@ const handleGetMovies = (req, res, next) => {
       !validCountries.toString().toLowerCase().includes(country.toLowerCase())
     ) {
       // if genres is not one of the valid genres, then return a status of 400
+      logger.error(`Invalid query input for country: ${country}.`);
       return res
         .status(400)
         .send(
@@ -109,17 +111,6 @@ const handleGetMovies = (req, res, next) => {
       );
     }
   }
-
-  // use the filter method to filter out searches that don't include country string\
-  // let results = MOVIEDEX.filter((movie) =>
-  //   movie["country"].toLowerCase().includes(country.toLowerCase())
-  // );
-
-  // let results = MOVIEDEX.filter((movie) =>
-  //   movie["genre"].toLowerCase().includes(genre.toLowerCase())
-  // );
-
-  // for avg vote, use the filter method to filter out searches that dont include country string
 
   res.json(response);
 };
