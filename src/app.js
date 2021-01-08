@@ -35,6 +35,8 @@ app.use(express.json());
 
 //ROUTES
 const handleGetMovies = (req, res, next) => {
+  let response = MOVIEDEX;
+
   // read the req.query object; provide default values for the ones that are required
   const { genre = "", country = "", avg_vote } = req.query;
 
@@ -61,25 +63,67 @@ const handleGetMovies = (req, res, next) => {
     "Grotesque",
   ];
 
-  // if there is a genre, it must also be validated
   if (genre) {
-    let response = MOVIEDEX;
-
-    if (!validGenres.toString().includes(genre)) {
-      // if genres is not one of the validgenres, then return a status of 400
+    if (!validGenres.toString().toLowerCase().includes(genre.toLowerCase())) {
+      // if genres is not one of the valid genres, then return a status of 400
       return res
         .status(400)
         .send(
-          "Genre must either be Action, Puzzle, Strategy, Casual, Arcade or Card"
+          "Genre must either be animation, drama, romantic, comedy, crime, thriller, adventure, documentary, horror, action, western, final embrace, spy, history, biography, musical, fantasy, war, or grotesque."
         );
+    } else {
+      response = MOVIEDEX.filter((movie) =>
+        movie["genre"].toLowerCase().includes(genre.toLowerCase())
+      );
     }
   }
 
-  // use the filter method to filter out searches that dont include country string
+  // if there is a country, it must also be validated
+  const validCountries = [
+    "United States",
+    "Italy",
+    "Germany",
+    "Israel",
+    "Great Britain",
+    "France",
+    "Hungary",
+    "China",
+    "Canada",
+    "Spain",
+    "Japan",
+  ];
+
+  if (country) {
+    if (
+      !validCountries.toString().toLowerCase().includes(country.toLowerCase())
+    ) {
+      // if genres is not one of the valid genres, then return a status of 400
+      return res
+        .status(400)
+        .send(
+          "Country must either be United States, Italy, Germany, Israel, Great Britain, France, Hungary, China, Canada, Spain, or Japan."
+        );
+    } else {
+      response = MOVIEDEX.filter((movie) =>
+        movie["country"].toLowerCase().includes(country.toLowerCase())
+      );
+    }
+  }
+
+  // use the filter method to filter out searches that don't include country string\
+  // let results = MOVIEDEX.filter((movie) =>
+  //   movie["country"].toLowerCase().includes(country.toLowerCase())
+  // );
+
+  // let results = MOVIEDEX.filter((movie) =>
+  //   movie["genre"].toLowerCase().includes(genre.toLowerCase())
+  // );
+
   // for avg vote, use the filter method to filter out searches that dont include country string
 
   res.json(response);
 };
+
 app.get("/movie", handleGetMovies);
 
 // CATCH ANY THROWN ERRORS AND THEN DEFINE THE ERROR AND KEEP THE APPLICATION RUNNING;
