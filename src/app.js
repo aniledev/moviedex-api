@@ -33,6 +33,8 @@ app.use(cors());
 // add a validation function here for the authorization token
 app.use(express.json());
 
+// middleware used to validate the auth token
+
 //ROUTES
 const handleGetMovies = (req, res, next) => {
   let response = MOVIEDEX;
