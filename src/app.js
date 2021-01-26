@@ -35,6 +35,15 @@ app.use(express.json());
 
 // middleware used to validate the auth token
 
+app.use(function validationBearerToken(req, res, next) {
+  const apiToken = process.env.API_TOKEN;
+  const authToken = req.get("Authorization");
+  if (!authToken || authToken.split(" ")[1] !== apiToken) {
+    return res.status(401).json({ error: "Unauthorized request/" });
+  }
+  next();
+});
+
 //ROUTES
 const handleGetMovies = (req, res, next) => {
   let response = MOVIEDEX;
